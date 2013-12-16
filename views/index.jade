@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  #loginContainer
+      input#name(style='width:100px', placeholder="your name")
+      input#register(type='button', value='register')
+  #chatContainer(style='visibility: hidden')
+      #content(style='width: 1000px; height: 400px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;')
+      .controls
+          select#users(style='width:150px;')
+            option (all)
+          input#field(style='width:300px;', placeholder="your message")
+          input#send(type='button', value='send')
+      #online
