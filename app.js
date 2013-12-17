@@ -13,15 +13,26 @@ var sockets = [];
 var names = [];
 
 io.sockets.on("connection", function(socket){
-    sockets.push(socket);
 
     socket.on("register", function(data){
         names.push(data.name);
+        sockets.push({
+            key: data.name,
+            value: socket
+        });
         io.sockets.emit('incoming', {users: names, user: data.name, message: ' enters in chat room!'});
     });
 
     socket.on("sendMessage", function(msg){
         io.sockets.emit("getMessage", {from: msg.from, message: msg.message, to: msg.to});
+    });
+
+    socket.on("privateMessage", function(msg){
+        sockets.forEach(function(item){
+            if(item.key === msg.to || item.key === msg.from){
+                item.value.emit("getMessage", {from: msg.from, message: msg.message, to: msg.to});
+            }
+        });
     });
 });
 
